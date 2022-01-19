@@ -35,7 +35,7 @@ RUN apt-get update \
 && rm -rf /var/lib/apt/lists/*
 
 ENV KUBE_VERSION="v1.20.0"
-ENV KUSTOMIZE_VERSION="v4.1.0"
+ENV KUSTOMIZE_VERSION="v4.4.0"
 ENV YQ_VERSION="v4.16.2"
 ENV HELM_VERSION="v3.1.0"
 
