@@ -12,3 +12,4 @@
 - Straight forward Dockerfile.
 - Distinguishes between `arm64` and `amd64` hosts and offers an image for both architectures.
 - [Dockerhub](https://hub.docker.com/r/allaman/problemsolver)
+- Blog [post](https://rootknecht.net/blog/multi-arch-docker/) about multi arch Docker images.
