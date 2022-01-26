@@ -16,6 +16,7 @@ RUN apt-get update \
   jq \
   kafkacat \
   micro \
+  mtr \
   nano \
   netcat \
   nmap \
