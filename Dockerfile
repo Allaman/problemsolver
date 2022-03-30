@@ -24,6 +24,7 @@ RUN apt-get update \
   postgresql-client \
   openssh-client \
   openssl \
+  redis-tools \
   ripgrep \
   s4cmd \
   tar \
