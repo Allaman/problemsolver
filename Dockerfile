@@ -21,6 +21,7 @@ RUN apt-get update \
   netcat \
   nmap \
   nnn \
+  postgresql-client \
   openssh-client \
   openssl \
   ripgrep \
