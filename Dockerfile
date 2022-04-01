@@ -44,6 +44,7 @@ ENV KUBE_VERSION="v1.20.0"
 ENV KUSTOMIZE_VERSION="v4.4.0"
 ENV YQ_VERSION="v4.16.2"
 ENV HELM_VERSION="v3.1.0"
+ENV PATH=$PATH:/usr/local/go/bin
 
 # Download tools that are not available as Debian package
 RUN curl -sLo /usr/local/bin/yq https://github.com/mikefarah/yq/releases/download/${YQ_VERSION}/yq_linux_${TARGETARCH} && \
@@ -54,5 +55,9 @@ RUN curl -sLo /usr/local/bin/yq https://github.com/mikefarah/yq/releases/downloa
     tar -xC /tmp -f /tmp/helm-${HELM_VERSION}.tar.gz linux-${TARGETARCH}/helm --strip-components=1 && \
     mv /tmp/helm /usr/local/bin/helm && \
     chmod +x /usr/local/bin/*
+
+RUN wget https://go.dev/dl/go1.18.linux-${TARGETARCH}.tar.gz && \
+    tar -C /usr/local -xzf go1.18.linux-${TARGETARCH}.tar.gz && \
+    rm go1.18.linux-${TARGETARCH}.tar.gz
 
 ENTRYPOINT [ "/bin/bash" ]

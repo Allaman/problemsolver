@@ -11,5 +11,6 @@
 - Based upon `debian:stable-slim`. Why not Alpine? To be sure to not run into [DNS issues](https://stackoverflow.com/a/65593511).
 - Straight forward Dockerfile.
 - Distinguishes between `arm64` and `amd64` hosts and offers an image for both architectures.
+- Includes plenty of useful tools and Golang 1.18
 - [Dockerhub](https://hub.docker.com/r/allaman/problemsolver)
 - Blog [post](https://rootknecht.net/blog/multi-arch-docker/) about multi arch Docker images.
