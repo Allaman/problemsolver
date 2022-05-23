@@ -2,7 +2,7 @@ ARG ARCH=
 FROM ${ARCH}debian:stable-slim
 
 RUN apt-get update \
-&& apt-get install -y \
+&& apt-get install --no-install-recommends -y \
   awscli \
   bash-completion \
   curl \
@@ -56,8 +56,8 @@ RUN curl -sLo /usr/local/bin/yq https://github.com/mikefarah/yq/releases/downloa
     mv /tmp/helm /usr/local/bin/helm && \
     chmod +x /usr/local/bin/*
 
-RUN wget https://go.dev/dl/go1.18.linux-${TARGETARCH}.tar.gz && \
-    tar -C /usr/local -xzf go1.18.linux-${TARGETARCH}.tar.gz && \
-    rm go1.18.linux-${TARGETARCH}.tar.gz
+RUN curl -sLo go.tar.gz https://go.dev/dl/go1.18.linux-${TARGETARCH}.tar.gz && \
+    tar -C /usr/local -xzf go.tar.gz && \
+    rm go.tar.gz
 
 ENTRYPOINT [ "/bin/bash" ]
