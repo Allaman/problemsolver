@@ -17,6 +17,8 @@
 
 ## Examples
 
+You can also use the GitHub registry: `ghcr.io/allaman/problemsolver`
+
 Start problemsolver in your configured Kubernetes cluster in interactive mode
 
 ```sh
