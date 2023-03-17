@@ -6,8 +6,8 @@ on:
       - "main"
     tags:
       - "*"
-    # paths:
-    # - "Dockerfile"
+    paths:
+      - "Dockerfile"
 
 jobs:
   linter:
