@@ -61,5 +61,7 @@ RUN curl -sLo /usr/local/bin/yq https://github.com/mikefarah/yq/releases/downloa
 RUN curl -sLo go.tar.gz https://go.dev/dl/go1.18.linux-${TARGETARCH}.tar.gz && \
     tar -C /usr/local -xzf go.tar.gz && \
     rm go.tar.gz
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
 
-ENTRYPOINT [ "/bin/bash" ]
+ENTRYPOINT ["/entrypoint.sh"]
