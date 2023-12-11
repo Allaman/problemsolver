@@ -3,6 +3,7 @@ FROM ${ARCH}debian:stable-slim
 
 RUN apt-get update \
 && apt-get install --no-install-recommends -y \
+  azure-cli \
   awscli \
   bash-completion \
   curl \
@@ -18,10 +19,11 @@ RUN apt-get update \
   micro \
   mtr \
   nano \
-  netcat \
+  netcat-traditional \
   nmap \
   nnn \
-  postgresql-client \
+  postgresql-client-15 \
+  python3-pip \
   openssh-client \
   openssl \
   redis-tools \
