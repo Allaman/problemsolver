@@ -1,5 +1,5 @@
 ARG ARCH=
-FROM ${ARCH}debian:stable-slim
+FROM ${ARCH}debian:bookworm-slim
 
 RUN apt-get update \
 && apt-get install --no-install-recommends -y \
