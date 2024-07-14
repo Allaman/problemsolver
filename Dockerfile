@@ -42,10 +42,10 @@ RUN apt-get update \
 ARG TARGETOS
 ARG TARGETARCH
 
-ENV KUBE_VERSION="v1.21.12"
-ENV KUSTOMIZE_VERSION="v4.5.7"
-ENV YQ_VERSION="v4.16.2"
-ENV HELM_VERSION="v3.11.0"
+ENV KUBE_VERSION="v1.26.0"
+ENV KUSTOMIZE_VERSION="v5.3.0"
+ENV YQ_VERSION="v4.41.1"
+ENV HELM_VERSION="v3.12.3"
 ENV PATH=$PATH:/usr/local/go/bin
 
 # Download tools that are not available as Debian package
