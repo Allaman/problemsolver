@@ -1,4 +1,3 @@
-ARG ARCH=
 FROM ${ARCH}debian:bookworm-slim
 
 RUN apt-get update \
