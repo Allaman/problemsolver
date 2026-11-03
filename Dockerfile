@@ -1,32 +1,29 @@
-FROM ${ARCH}debian:bookworm-slim
+# syntax=docker/dockerfile:1
+FROM debian:trixie-slim
+
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 RUN apt-get update \
     && apt-get install --no-install-recommends -y \
-        azure-cli \
-        awscli \
         bash-completion \
+        bind9-dnsutils \
+        ca-certificates \
         curl \
         default-mysql-client \
         dhcpdump \
-        dnsutils \
-        fd-find \
         git \
-        httpie \
         iputils-ping \
         jq \
-        kafkacat \
-        micro \
         mtr \
         nano \
         netcat-traditional \
         nmap \
         nnn \
-        postgresql-client-15 \
+        postgresql-client \
         python3-pip \
         openssh-client \
         openssl \
         redis-tools \
-        ripgrep \
         s4cmd \
         tar \
         tcpdump \
@@ -41,25 +38,30 @@ RUN apt-get update \
 ARG TARGETOS
 ARG TARGETARCH
 
-ENV KUBE_VERSION="v1.26.0"
-ENV KUSTOMIZE_VERSION="v5.3.0"
-ENV YQ_VERSION="v4.41.1"
-ENV HELM_VERSION="v3.12.3"
-ENV PATH=$PATH:/usr/local/go/bin
+ARG WK_VERSION="4.9.5"
+# werkzeugkasten reads WK_<TOOL>_TAG to pin a tool's version
+ARG WK_KUBECTL_TAG="v1.37.2"
+ARG WK_KUSTOMIZE_TAG="kustomize/v5.8.3"
+ARG WK_HELM_TAG="v4.3.1"
+ARG WK_FD_TAG="v10.5.0"
+ARG WK_RIPGREP_TAG="15.2.0"
+ARG WK_MICRO_TAG="v2.0.15"
+ARG WK_YQ_TAG="v4.54.1"
+ARG WK_CURLIE_TAG="v1.8.2"
+ARG WK_KAF_TAG="v0.2.14"
 
-# Download tools that are not available as Debian package
-RUN curl -sLo /usr/local/bin/yq https://github.com/mikefarah/yq/releases/download/${YQ_VERSION}/yq_linux_${TARGETARCH} \
-    && curl -sLo /usr/local/bin/kubectl https://storage.googleapis.com/kubernetes-release/release/${KUBE_VERSION}/bin/linux/${TARGETARCH}/kubectl \
-    && curl -sLo /tmp/kustomize.tar.gz https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2F${KUSTOMIZE_VERSION}/kustomize_${KUSTOMIZE_VERSION}_linux_${TARGETARCH}.tar.gz \
-    && tar -xC /usr/local/bin/ -f /tmp/kustomize.tar.gz \
-    && curl -sLo /tmp/helm-${HELM_VERSION}.tar.gz https://get.helm.sh/helm-${HELM_VERSION}-linux-${TARGETARCH}.tar.gz \
-    && tar -xC /tmp -f /tmp/helm-${HELM_VERSION}.tar.gz linux-${TARGETARCH}/helm --strip-components=1 \
-    && mv /tmp/helm /usr/local/bin/helm \
-    && chmod +x /usr/local/bin/*
+# werkzeugkasten release assets use x86_64 instead of amd64.
+# The optional github_token secret avoids GitHub API rate limits.
+RUN --mount=type=secret,id=github_token,env=GITHUB_TOKEN WK_ARCH="$(echo "${TARGETARCH}" | sed s/amd64/x86_64/)" \
+    && WK_BIN="werkzeugkasten_${WK_VERSION}_linux_${WK_ARCH}" \
+    && curl -fsSLo "/tmp/${WK_BIN}" "https://github.com/Allaman/werkzeugkasten/releases/download/${WK_VERSION}/${WK_BIN}" \
+    && curl -fsSL "https://github.com/Allaman/werkzeugkasten/releases/download/${WK_VERSION}/werkzeugkasten_${WK_VERSION}_checksums.txt" \
+    | grep " ${WK_BIN}$" | sed "s|  |  /tmp/|" | sha256sum -c - \
+    && install -m 755 "/tmp/${WK_BIN}" /usr/local/bin/werkzeugkasten \
+    && werkzeugkasten -dir /usr/local/bin \
+        -tool kubectl -tool kustomize -tool helm -tool fd -tool ripgrep -tool micro -tool yq -tool curlie -tool kaf \
+    && rm -rf /tmp/* /root/.cache/werkzeugkasten
 
-RUN curl -sLo go.tar.gz https://go.dev/dl/go1.18.linux-${TARGETARCH}.tar.gz \
-    && tar -C /usr/local -xzf go.tar.gz \
-    && rm go.tar.gz
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
